@@ -6,7 +6,7 @@
         {
 
             //TEMP STORAEGE 
-
+            //to use as seed data
             string[] patientNames = new string[100];
             string[] patientIDs = new string[100];
             string[] diagnosis = new string[100];

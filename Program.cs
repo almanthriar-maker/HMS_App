@@ -1,4 +1,6 @@
-﻿namespace Healthcare_Management_System
+﻿using static System.Runtime.InteropServices.JavaScript.JSType;
+
+namespace Healthcare_Management_System
 {
     internal class Program
     {
@@ -81,8 +83,28 @@
                 Console.WriteLine("10. Exit");
                 Console.WriteLine("Choose option: ");
 
-                int choice = int.Parse(Console.ReadLine());
+
+
+                int choice = 0;
+
+
+                try
+                {
+
+
+                    choice = int.Parse(Console.ReadLine());
+
+                }
+
+                catch (Exception ex)
+
+                {
+                    
+                    Console.WriteLine(ex.Message);
+                    Console.WriteLine("Invalid input. Please choose a number from 1 to 10.");
+                }
                 switch (choice)
+
                 {
                     case 1:
                         lastPatientIndex++;

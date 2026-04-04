@@ -1,483 +1,547 @@
-﻿using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace Healthcare_Management_System
+﻿namespace HMS_APP
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static void Main(string[] args) //startig point
         {
+            // System Storage
 
-            //TEMP STORAEGE 
-            //to use as seed data
             string[] patientNames = new string[100];
             string[] patientIDs = new string[100];
-            string[] diagnosis = new string[100];
-            bool[] admitted = new bool[100];       // true = currently admitted
+            string[] diagnoses = new string[100];
+            bool[] admitted = new bool[100];
             string[] assignedDoctors = new string[100];
-            string[] departments = new string[100];     // e.g. "Cardiology", "Orthopedics"
-            int[] visitCount = new int[100];        // how many times admitted
-            double[] billingAmount = new double[100];     // total fees owed
-            int lastPatientIndex = -1;
+            string[] departments = new string[100];
+            int[] visitCount = new int[100];
+            double[] billingAmount = new double[100];
 
 
-            //patient1: 
-            lastPatientIndex++;
-
-            patientNames[lastPatientIndex] = "Ali Hassan";
-            patientIDs[lastPatientIndex] = "P001";
-            diagnosis[lastPatientIndex] = "Flu";
-            departments[lastPatientIndex] = "General";
-            admitted[lastPatientIndex] = false;
-            assignedDoctors[lastPatientIndex] = "";
-            visitCount[lastPatientIndex] = 2;
-            billingAmount[lastPatientIndex] = 0;
-
-
-            //patient2:
-            lastPatientIndex++;
-
-            patientNames[lastPatientIndex] = "Sara Ahmed";
-            patientIDs[lastPatientIndex] = "P002";
-            diagnosis[lastPatientIndex] = "Fracture";
-            departments[lastPatientIndex] = "Orthopedics";
-            admitted[lastPatientIndex] = true;
-            assignedDoctors[lastPatientIndex] = "Dr. Noor";
-            visitCount[lastPatientIndex] = 4;
-            billingAmount[lastPatientIndex] = 0;
+            string[] lastVisitDateStr = new string[100];
+            string[] lastDischargeDate = new string[100];
+            int[] daysInHospital = new int[100];
+            string[] bloodType = new string[100];
 
 
 
-            //patient3:
-            lastPatientIndex++;
+            // Patient[] patients = new Patient[100];
 
-            patientNames[lastPatientIndex] = "Omar Khalid";
-            patientIDs[lastPatientIndex] = "P003";
-            diagnosis[lastPatientIndex] = "Diabetes";
-            departments[lastPatientIndex] = "Cardiology";
-            admitted[lastPatientIndex] = false;
-            assignedDoctors[lastPatientIndex] = "";
-            visitCount[lastPatientIndex] = 1;
-            billingAmount[lastPatientIndex] = 0;
+            //////////////////////////////////////////////////////
+
+
+            // Seed Data
+            /////////////////////////////////////////////////////
+            int lastIndex = 0;
+
+
+            patientNames[lastIndex] = "Ali Hassan";
+            patientIDs[lastIndex] = "P001";
+            diagnoses[lastIndex] = "Flu";
+            departments[lastIndex] = "General";
+            admitted[lastIndex] = false;
+            assignedDoctors[lastIndex] = "";
+            visitCount[lastIndex] = 2;
+            billingAmount[lastIndex] = 0;
+            lastVisitDateStr[lastIndex] = "2025-01-10";
+            lastDischargeDate[lastIndex] = "2025-01-15";
+            daysInHospital[lastIndex] = 12;
+            bloodType[lastIndex] = "A+";
+
+            lastIndex++;
+
+            patientNames[lastIndex] = "Sara Ahmed";
+            patientIDs[lastIndex] = "P002";
+            diagnoses[lastIndex] = "Fracture";
+            departments[lastIndex] = "Orthopedics";
+            admitted[lastIndex] = true;
+            assignedDoctors[lastIndex] = "Dr. Noor";
+            visitCount[lastIndex] = 4;
+            billingAmount[lastIndex] = 0;
+            lastVisitDateStr[lastIndex] = "2025-03-02";
+            lastDischargeDate[lastIndex] = "";
+            daysInHospital[lastIndex] = 8;
+            bloodType[lastIndex] = "O-";
+
+            lastIndex++;
+
+            patientNames[lastIndex] = "Omar Khalid";
+            patientIDs[lastIndex] = "P003";
+            diagnoses[lastIndex] = "Diabetes";
+            departments[lastIndex] = "Cardiology";
+            admitted[lastIndex] = false;
+            assignedDoctors[lastIndex] = "";
+            visitCount[lastIndex] = 1;
+            billingAmount[lastIndex] = 0;
+            lastVisitDateStr[lastIndex] = "2024-12-20";
+            lastDischargeDate[lastIndex] = "2024-12-28";
+            daysInHospital[lastIndex] = 5;
+            bloodType[lastIndex] = "B+";
+
+
+
+            ////////////////////////////////////////////////////////////////////
+
 
 
 
             bool exit = false;
+
             while (exit == false)
-
-
-
-
-
             {
-
-                Console.WriteLine("Healthcare_Management_System");
-                Console.WriteLine("1. Register New Patient");
-                Console.WriteLine("2. Admit Patient");
-                Console.WriteLine("3. Discharge Patient");
-                Console.WriteLine("4. Search Patient");
-                Console.WriteLine("5. List All Admitted Patients");
-                Console.WriteLine("6. Transfer Patient to Another Doctor");
-                Console.WriteLine("7. View Most Visited Patients");
-                Console.WriteLine("8. Search Patients by Department");
-                Console.WriteLine("9. Billing Report");
+                Console.WriteLine("===== Healthcare Management System =====");
+                Console.WriteLine("----------------------------------------");
+                Console.WriteLine("1.  Register New Patient");  //1 easy
+                Console.WriteLine("2.  Admit Patient");//4 easy
+                Console.WriteLine("3.  Discharge Patient");
+                Console.WriteLine("4.  Search Patient"); //2 easy
+                Console.WriteLine("5.  List All Admitted Patients"); //3 easy
+                Console.WriteLine("6.  Transfer Patient to Another Doctor");
+                Console.WriteLine("7.  View Most Visited Patients");
+                Console.WriteLine("8.  Search Patients by Department");
+                Console.WriteLine("9.  Billing Report");
                 Console.WriteLine("10. Exit");
-                Console.WriteLine("Choose option: ");
-
-
+                Console.Write("Choose option: ");
 
                 int choice = 0;
-
 
                 try
                 {
 
-
                     choice = int.Parse(Console.ReadLine());
-
                 }
-
                 catch (Exception ex)
-
                 {
-                    
                     Console.WriteLine(ex.Message);
                     Console.WriteLine("Invalid input. Please choose a number from 1 to 10.");
                 }
+
                 switch (choice)
-
                 {
-                    case 1:
-                        lastPatientIndex++;
-
-                        Console.Write("patientNames: ");
-                        patientNames[lastPatientIndex] = Console.ReadLine();
-
-                        Console.Write("patientIDs: ");
-                        patientIDs[lastPatientIndex] = Console.ReadLine();
-
-                        Console.Write("diagnosis: ");
-                        diagnosis[lastPatientIndex] = Console.ReadLine();
 
 
-                        Console.Write("departments: ");
-                        departments[lastPatientIndex] = Console.ReadLine();
 
 
-                        admitted[lastPatientIndex] = false;
-                        visitCount[lastPatientIndex] = 0;
-                        billingAmount[lastPatientIndex] = 0;
+                    case 1: // Register New Patient
+                        lastIndex++;
 
-                        Console.WriteLine("Patient registered successfully!");
+                        Console.Write("Patient Name: ");
+                        patientNames[lastIndex] = Console.ReadLine();
 
+                        //Console.Write("Patient ID: ");
+                        //patientIDs[lastIndex] = Console.ReadLine();
+
+                        Console.Write("Diagnosis: ");
+                        diagnoses[lastIndex] = Console.ReadLine();
+
+                        Console.Write("Department: ");
+                        departments[lastIndex] = Console.ReadLine();
+
+
+                        patientIDs[lastIndex] = "P00" + lastIndex;
+                        admitted[lastIndex] = false;
+                        assignedDoctors[lastIndex] = "";
+                        visitCount[lastIndex] = 0;
+                        billingAmount[lastIndex] = 0;
+                        lastVisitDateStr[lastIndex] = "";
+                        lastDischargeDate[lastIndex] = "";
+                        daysInHospital[lastIndex] = 0;
+
+                        Console.Write("Enter Blood Type: ");
+                        bloodType[lastIndex] = Console.ReadLine();
+
+                        Console.WriteLine("Patient registered successfully with ID :" + patientIDs[lastIndex]);
                         break;
 
-
-                    case 2:
-
-
-                        Console.Write("patient ID or name:");
-                        string input = Console.ReadLine();
-
-                        int foundIndex = -1;
-
-                        for (int i = 0; i <= lastPatientIndex; i++)
-                        {
-                            if (patientIDs[i] == input || patientNames[i] == input)
-                            {
-                                foundIndex = i;
-                                break;
-                            }
-                        }
-
-                        if (foundIndex == -1)
-                        {
-                            Console.WriteLine("Patient not found");
-                            return;
-                        }
-
-                        if (admitted[foundIndex])
-                        {
-                            Console.WriteLine("Patient is already admitted under " + assignedDoctors[foundIndex]);
-                            return;
-                        }
-
-                        Console.Write("Enter Doctor Name: ");
-                        string doctor = Console.ReadLine();
-
-                        admitted[foundIndex] = true;
-                        assignedDoctors[foundIndex] = doctor;
-                        visitCount[foundIndex]++;
-
-                        Console.WriteLine("Patient admitted successfully and assigned to " + doctor);
-                        Console.WriteLine("This patient has been admitted " + visitCount[foundIndex] + " times");
-
-                        break;
-
-
-                    case 3:
-
-                        Console.Write("patient ID or name:");
-                        string Input = Console.ReadLine();
-
-                        int FoundIndex = -1;
-
-                        for (int i = 0; i <= lastPatientIndex; i++)
-                        {
-                            if (patientIDs[i] == Input || patientNames[i] == Input)
-                            {
-                                FoundIndex = i;
-                                break;
-                            }
-                        }
-
-                        if (FoundIndex == -1)
-                        {
-                            Console.WriteLine("Patient not found");
-                            return;
-                        }
-
-                        if (!admitted[FoundIndex])
-                        {
-                            Console.WriteLine("This patient is not currently admitted");
-                            return;
-                        }
-
-                        double visitCharges = 0;
-                        Console.Write("Was there a consultation fee? (yes/no): ");
-                        string consult = Console.ReadLine().ToLower();
-
-                        if (consult == "yes")
-                        {
-                            Console.Write("Enter consultation fee: ");
-                            double.TryParse(Console.ReadLine(), out double fee);
-                            visitCharges += fee;
-                        }
-
-                        Console.Write("Any medication charges? (yes/no): ");
-                        string meds = Console.ReadLine().ToLower();
-
-                        if (meds == "yes")
-                        {
-                            Console.Write("Enter medication charges: ");
-                            double.TryParse(Console.ReadLine(), out double medFee);
-                            visitCharges += medFee;
-                        }
-                        billingAmount[FoundIndex] += visitCharges;
-                        admitted[FoundIndex] = false;
-                        assignedDoctors[FoundIndex] = "";
-
-                        if (visitCharges > 0)
-                        {
-                            Console.WriteLine("Total charges added this visit: " + visitCharges + " OMR");
-                        }
-                        else
-                        {
-                            Console.WriteLine("No charges recorded for this visit");
-                        }
-
-                        Console.WriteLine("Patient discharged successfully!");
-
-                        break;
-
-                    case 4:
+                    case 2: // Admit Patient
                         Console.Write("Enter Patient ID or Name: ");
-                        string Inpot = Console.ReadLine();
+                        string admitInput = Console.ReadLine();
 
-                        int FaoundIndex = -1;
+                        bool admitFound = false;
 
-                        for (int i = 0; i <= lastPatientIndex; i++)
+                        for (int i = 0; i <= lastIndex; i++)
                         {
-                            if (patientIDs[i] == Inpot || patientNames[i] == Inpot)
+                            if (patientNames[i] == admitInput || patientIDs[i] == admitInput)
                             {
-                                FaoundIndex = i;
+                                admitFound = true;
+
+                                if (admitted[i] == false)
+                                {
+                                    Console.Write("Doctor Name: ");
+                                    assignedDoctors[i] = Console.ReadLine();
+
+                                    admitted[i] = true;
+                                    visitCount[i]++;
+                                    lastVisitDateStr[lastIndex] = "2025-01-10";
+                                    
+
+                                    Console.WriteLine("Patient admitted successfully and assigned to " + assignedDoctors[i]);
+
+                                    if (visitCount[i] > 1)
+                                        Console.WriteLine("This patient has been admitted " + visitCount[i] + " times");
+                                    else
+                                        Console.WriteLine("this is first time");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Patient is already admitted under " + assignedDoctors[i]);
+                                }
+
                                 break;
                             }
                         }
-                        if (FaoundIndex == -1)
+
+                        if (admitFound == false)
                         {
                             Console.WriteLine("Patient not found");
-                            return;
                         }
-                        Console.WriteLine("\n--- Patient Details ---");
-                        Console.WriteLine("Name: " + patientNames[FaoundIndex]);
-                        Console.WriteLine("ID: " + patientIDs[FaoundIndex]);
-                        Console.WriteLine("Diagnosis: " + diagnosis[FaoundIndex]);
-                        Console.WriteLine("Department: " + departments[FaoundIndex]);
 
-                        Console.WriteLine("Admission Status: " +
-                            (admitted[FaoundIndex] ? "Admitted" : "Not Admitted"));
+                        break;
 
-                        Console.WriteLine("Visit Count: " + visitCount[FaoundIndex]);
-                        Console.WriteLine("Total Billing Amount: " + billingAmount[FaoundIndex] + " OMR");
+                    case 3: // Discharge Patient
+                        Console.Write("Enter Patient ID or Name: ");
+                        string dischargeInput = Console.ReadLine();
 
-                        if (admitted[FaoundIndex])
+
+                        bool dischargeFound = false;
+
+                        for (int i = 0; i <= lastIndex; i++)
                         {
-                            Console.WriteLine("Assigned Doctor: " + assignedDoctors[FaoundIndex]);
+                            if (patientNames[i] == dischargeInput || patientIDs[i] == dischargeInput)
+                            {
+                                dischargeFound = true;
+
+                                if (admitted[i] == true)
+                                {
+                                    double visitCharges = 0;
+
+                                    Console.Write("Was there a consultation fee? (yes/no): ");
+                                    string hasFee = Console.ReadLine().ToLower();
+
+                                    if (hasFee == "yes")
+                                    {
+                                        Console.Write("Enter consultation fee amount: ");
+                                        double fee = 0;
+                                        try
+                                        {
+                                            fee = double.Parse(Console.ReadLine());
+                                            if (fee > 0)
+                                            {
+                                                billingAmount[i] += fee;
+                                                visitCharges += fee;
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine("fee amount must be posititve");
+                                            }
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            Console.WriteLine("Invalid amount. Please enter a valid number.");
+                                        }
+                                    }
+
+                                    Console.Write("Any medication charges? (yes/no): ");
+                                    string hasMeds = Console.ReadLine().ToLower();
+
+                                    if (hasMeds == "yes")
+                                    {
+                                        Console.Write("Enter medication charges amount: ");
+
+                                        double med = 0;
+
+                                        try
+                                        {
+                                            med = double.Parse(Console.ReadLine());
+
+                                            if (med >= 0)
+                                            {
+                                                billingAmount[i] += med;
+                                                visitCharges += med;
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine("Amount must be positive.");
+                                            }
+                                        }
+                                        catch (FormatException)
+                                        {
+                                            Console.WriteLine("Invalid amount. Please enter a valid number.");
+                                        }
+
+
+
+                                    }
+
+                                    if (visitCharges > 0)
+                                    {
+                                        Console.WriteLine("Total charges added this visit: " + visitCharges + " OMR");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("No charges recorded for this visit");
+                                    }
+
+                                    admitted[i] = false;
+                                    assignedDoctors[i] = "";
+
+                                    Console.WriteLine("Patient discharged successfully!");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("This patient is not currently admitted");
+                                }
+
+                                break;
+                            }
+                        }
+
+                        if (dischargeFound == false)
+                        {
+                            Console.WriteLine("Patient not found");
                         }
 
                         break;
 
 
 
-                    case 5:
 
-                        bool foundAny = false;
+                    case 4: // Search Patient
+                        Console.Write("Enter Patient ID or Name: ");
+                        string searchInput = Console.ReadLine();
 
-                        Console.WriteLine("\n--- Admitted Patients ---");
 
-                        for (int i = 0; i <= lastPatientIndex; i++)
+                        bool pateintFound = false;
+
+
+                        for (int i = 0; i <= lastIndex; i++)
                         {
-                            if (admitted[i])
-                            {
-                                foundAny = true;
 
-                                Console.WriteLine("Name: " + patientNames[i]);
-                                Console.WriteLine("ID: " + patientIDs[i]);
-                                Console.WriteLine("Diagnosis: " + diagnosis[i]);
-                                Console.WriteLine("Department: " + departments[i]);
-                                Console.WriteLine("Assigned Doctor: " + assignedDoctors[i]);
-                                Console.WriteLine("");
+
+                            if (patientNames[i] == searchInput || patientIDs[i] == searchInput)
+                            {
+                                pateintFound = true;
+                                Console.WriteLine("----------------------------------------");
+                                Console.WriteLine("Name:           " + patientNames[i]);
+                                Console.WriteLine("ID:             " + patientIDs[i]);
+                                Console.WriteLine("Diagnosis:      " + diagnoses[i]);
+                                Console.WriteLine("Department:     " + departments[i]);
+                                Console.WriteLine("Admitted:       " + admitted[i]);
+                                Console.WriteLine("Total Visits:   " + visitCount[i]);
+                                Console.WriteLine("Total Billing:  " + billingAmount[i] + " OMR");
+                                Console.WriteLine("Doctor:         " + assignedDoctors[i]);
+                                Console.WriteLine("----------------------------------------");
+                                Console.WriteLine("Blood Type:      "+ bloodType[i]);
+                                Console.WriteLine("Last Visit:     " + lastVisitDateStr[i]);
+                                Console.WriteLine("Last Discharge: " + lastDischargeDate[i]);
+                                Console.WriteLine("Days in Hospital: " + daysInHospital[i]);
+                                break;
+                            }
+
+
+                        }
+
+                        if (pateintFound == false)
+                        {
+                            Console.WriteLine("Patient not found");
+                        }
+
+                        break;
+
+
+
+
+
+
+                    case 5: // List All Admitted Patients
+                        Console.WriteLine("Currently Admitted Patients:");
+                        Console.WriteLine("----------------------------------------");
+
+                        bool hasAdmitted = false;
+
+                        for (int i = 0; i <= lastIndex; i++)
+                        {
+                            if (admitted[i] == true)
+                            {
+                                Console.WriteLine("Name: " + patientNames[i] + " | ID: " + patientIDs[i] + " | Diagnosis: " + diagnoses[i] + " | Department: " + departments[i] + " | Doctor: " + assignedDoctors[i]);
+                                hasAdmitted = true;
                             }
                         }
 
-                        if (!foundAny)
+                        if (hasAdmitted == false)
                         {
                             Console.WriteLine("No patients currently admitted");
                         }
 
                         break;
 
-
-                    case 6:
-
-                        Console.Write("current doctor name:");
+                    case 6: // Transfer Patient to Another Doctor
+                        Console.Write("Enter current doctor name: ");
                         string currentDoctor = Console.ReadLine();
 
-                        Console.Write("new doctor name:");
+                        Console.Write("Enter new doctor name: ");
                         string newDoctor = Console.ReadLine();
 
-                        int FaaoundIndex = -1;
+                        bool doctorFound = false;
 
-                        for (int i = 0; i <= lastPatientIndex; i++)
+                        for (int i = 0; i <= lastIndex; i++)
                         {
-                            if (assignedDoctors[i] == currentDoctor && admitted[i])
+                            if (assignedDoctors[i] == currentDoctor && admitted[i] == true)
                             {
-                                FaaoundIndex = i;
-                                break;
+                                doctorFound = true;
+                                assignedDoctors[i] = newDoctor;
+                                Console.WriteLine("Patient '" + patientNames[i] + "' has been transferred to " + newDoctor);
                             }
                         }
 
-                        if (FaaoundIndex == -1)
+                        if (doctorFound == false)
                         {
-                            Console.WriteLine("No admitted patient found under this doctor");
-                            break;
+                            Console.WriteLine("No admitted patients found under this doctor");
                         }
-
-                        assignedDoctors[FaaoundIndex] = newDoctor;
-
-                        Console.WriteLine("Patient '" + patientNames[FaaoundIndex] + "' has been transferred to " + newDoctor);
 
                         break;
 
+                    case 7: // View Most Visited Patients
+                        Console.WriteLine("Most Visited Patients (by visit count):");
+                        Console.WriteLine("----------------------------------------");
 
-                    case 7:
+                        int[] tempVisits = new int[100];
 
-                        Console.WriteLine("\n--- visitCount ---");
-                        bool[] printed = new bool[lastPatientIndex + 1];
-
-                        for (int i = 0; i <= lastPatientIndex; i++)
+                        for (int i = 0; i <= lastIndex; i++)
                         {
-                            int maxIndex = -1;
-                            for (int j = 0; j <= lastPatientIndex; j++)
+                            tempVisits[i] = visitCount[i];
+                        }
+
+                        for (int pass = 0; pass <= lastIndex; pass++)
+                        {
+                            int maxIndex = 0;
+
+                            for (int i = 0; i <= lastIndex; i++)
                             {
-                                if (!printed[i])
+                                if (tempVisits[i] > tempVisits[maxIndex])
                                 {
-                                    if (maxIndex == -1 || visitCount[i] > visitCount[maxIndex])
-                                    {
-                                        maxIndex = i;
-                                    }
+                                    maxIndex = i;
                                 }
                             }
-                            if (maxIndex != -1)
-                            {
-                                printed[maxIndex] = true;
-                                Console.WriteLine("Name: " + patientNames[i]);
-                                Console.WriteLine("ID: " + patientIDs[i]);
-                                Console.WriteLine("Diagnosis: " + diagnosis[i]);
-                                Console.WriteLine("Department: " + departments[i]);
-                                Console.WriteLine("Assigned Doctor: " + assignedDoctors[i]);
-                                Console.WriteLine("");
-                            }
+
+                            Console.WriteLine("ID: " + patientIDs[maxIndex] + " | Name: " + patientNames[maxIndex] + " | Visits: " + tempVisits[maxIndex]);
+
+                            tempVisits[maxIndex] = -1;
                         }
-
-
 
                         break;
 
-                    case 8:
-                        Console.Write("Enter Department: ");
-                        string inpuot = Console.ReadLine().ToLower();
 
-                        bool fioundAny = false;
-                        Console.WriteLine("\n--- Patients in Department ---");
+                    case 8: // Search Patients by Department
+                        Console.Write("Enter department name: ");
+                        string searchDept = Console.ReadLine();
 
-                        for (int i = 0; i <= lastPatientIndex; i++)
+                        bool deptFound = false;
+
+                        Console.WriteLine("Patients in department '" + searchDept + "':");
+                        Console.WriteLine("----------------------------------------");
+
+                        for (int i = 0; i <= lastIndex; i++)
                         {
-                            if (departments[i].ToLower() == inpuot)
+                            if (departments[i].ToLower() == searchDept.ToLower())
                             {
-                                foundAny = true;
+                                deptFound = true;
 
-                                Console.WriteLine("ID: " + patientIDs[i]);
-                                Console.WriteLine("Name: " + patientNames[i]);
-                                Console.WriteLine("Diagnosis: " + diagnosis[i]);
-                                Console.WriteLine("Status: " + (admitted[i] ? "Admitted" : "Not Admitted"));
-                                Console.WriteLine("");
+
+                                string status = admitted[i] ? "Admitted" : "Not Admitted"; //ternary operator
+
+                                //string stat;
+                                //if (admitted[i] == true)
+                                //    stat = "admitted";
+                                //else
+                                //    stat = "not admitted";
+
+
+                                Console.WriteLine("ID: " + patientIDs[i] + " | Name: " + patientNames[i] + " | Diagnosis: " + diagnoses[i] + " | Status: " + status);
                             }
                         }
 
-                        if (!fioundAny)
+                        if (deptFound == false)
                         {
                             Console.WriteLine("No patients found in this department");
                         }
 
                         break;
 
-
-
-
-                    case 9:
-
-
-                        Console.WriteLine("\n--- Billing Report ---");
+                    case 9: // Billing Report
+                        Console.WriteLine("Billing Report:");
                         Console.WriteLine("1. System-wide total");
                         Console.WriteLine("2. Individual patient");
                         Console.Write("Choose option: ");
 
-                        int subChoice = int.Parse(Console.ReadLine());
+                        int billingOption = 0;
 
-                        if (subChoice == 1)
+                        try
+
                         {
-                            double total = 0;
 
-                            for (int i = 0; i <= lastPatientIndex; i++)
-                            {
-                                total += billingAmount[i];
-                            }
+                            billingOption = int.Parse(Console.ReadLine());
 
-                            Console.WriteLine("Total Billing Amount (All Patients): " + total + " OMR");
                         }
-
-                        else if (subChoice == 2)
+                        catch (FormatException)
                         {
-                            Console.Write("Enter Patient ID or Name: ");
-                            string iinput = Console.ReadLine();
-
-                            int foioundIndex = -1;
-
-                            for (int i = 0; i <= lastPatientIndex; i++)
-                            {
-                                if (patientIDs[i] == iinput || patientNames[i] == iinput)
-                                {
-                                    foioundIndex = i;
-                                    break;
-                                }
-                            }
-
-                            if (foioundIndex == -1 || billingAmount[foioundIndex] == 0)
-                            {
-                                Console.WriteLine("No billing records found for this patient");
-                            }
-                            else
-                            {
-                                Console.WriteLine("Patient Name: " + patientNames[foioundIndex]);
-                                Console.WriteLine("Total Billing Amount: " + billingAmount[foioundIndex] + " OMR");
-                            }
+                            Console.WriteLine("Invalid input. Please enter 1 or 2.");
                         }
+                 
 
-                        else
+                if (billingOption == 1)
+                {
+                    double totalBilling = 0;
+
+                    for (int i = 0; i <= lastIndex; i++)
+                    {
+                        totalBilling += billingAmount[i];
+                    }
+
+                    Console.WriteLine("");
+                    Console.WriteLine("Total billing collected: " + totalBilling + " OMR");
+                }
+                else if (billingOption == 2)
+                {
+                    Console.Write("Enter Patient ID or Name: ");
+                    string billingInput = Console.ReadLine();
+
+                    bool billingFound = false;
+
+                    for (int i = 0; i <= lastIndex; i++)
+                    {
+                        if (patientNames[i] == billingInput || patientIDs[i] == billingInput)
                         {
-                            Console.WriteLine("Invalid option");
+                            billingFound = true;
+                            Console.WriteLine("----------------------------------------");
+                            Console.WriteLine("Billing for " + patientNames[i] + ": " + billingAmount[i] + " OMR");
+                            break;
                         }
+                    }
 
-                        break;
+                    if (billingFound == false)
+                    {
+                        Console.WriteLine("No billing records found for this patient");
+                    }
+                }
 
+                break;
+            
 
-
-                    case 10:
+                    case 10: // Exit
                         Console.WriteLine("Exiting system...");
                         Console.WriteLine("Thank you for using the Healthcare Management System!");
+                        Console.WriteLine("----------------------------------------");
                         exit = true;
+                        break;
 
+                    default:
+                        Console.WriteLine("Invalid option. Please try again.");
                         break;
                 }
 
-                Console.WriteLine("press any key");
-                Console.ReadLine();
+                Console.WriteLine("Press any key to continue...");
+                Console.ReadKey();
                 Console.Clear();
-
             }
         }
     }
 }
-
-

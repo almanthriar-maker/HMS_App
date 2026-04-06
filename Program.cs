@@ -124,7 +124,6 @@ namespace HMS_APP
 
 
                     case 1: // Register New Patient
-                        lastIndex++;
 
                         Console.Write("Patient Name: ");
                         patientNames[lastIndex] = Console.ReadLine();
@@ -142,7 +141,7 @@ namespace HMS_APP
                         Console.Write("Enter Blood Type: ");
                         bloodType[lastIndex] = Console.ReadLine();
 
-                        patientIDs[lastIndex] = "P00" + lastIndex;
+                        patientIDs[lastIndex] = "P" + lastIndex.ToString("D3");
 
                         admitted[lastIndex] = false;
                         assignedDoctors[lastIndex] = "";
@@ -156,6 +155,7 @@ namespace HMS_APP
 
                         Console.WriteLine("Patient registered successfully with ID :" + patientIDs[lastIndex]);
 
+                        lastIndex++;
 
 
                         break;
@@ -191,7 +191,7 @@ namespace HMS_APP
                                     lastVisitDateStr[i] = AdmitionDate;
 
                                     Console.WriteLine("Patient admitted successfully and assigned to " + assignedDoctors[i]);
-                                   
+
 
                                     Console.WriteLine("AdmissionDate :" + lastVisitDateStr);
 
@@ -231,12 +231,12 @@ namespace HMS_APP
 
                                 if (admitted[i] == true)
                                 {
-                                   
+
                                     Console.Write("Enter Discharge Date (YYYY-MM-DD): ");
                                     string dischargeDate = Console.ReadLine();
                                     lastDischargeDate[i] = dischargeDate;
 
-                                   //day in hospital
+                                    //day in hospital
 
                                     Console.Write("Enter number of days stayed in hospital: ");
                                     int days = 0;
@@ -267,10 +267,13 @@ namespace HMS_APP
                                     if (hasFee == "yes")
                                     {
                                         Console.Write("Enter consultation fee amount: ");
+                                        double fee = 0;
                                         try
                                         {
-                                            double fee = double.Parse(Console.ReadLine());
 
+                                            billingAmount[i] += fee;
+                                            visitCharges += fee;
+                                            fee = double.Parse(Console.ReadLine());
                                             if (fee > 0)
                                             {
                                                 billingAmount[i] += fee;
@@ -278,7 +281,7 @@ namespace HMS_APP
                                             }
                                             else
                                             {
-                                                Console.WriteLine("Fee must be positive.");
+                                                Console.WriteLine("fee amount must be posititve");
                                             }
                                         }
                                         catch (FormatException)
@@ -313,7 +316,7 @@ namespace HMS_APP
                                         }
                                     }
 
-                                   
+
                                     if (visitCharges > 0)
                                     {
                                         Console.WriteLine("Total charges added this visit: " + visitCharges + " OMR");
@@ -325,7 +328,7 @@ namespace HMS_APP
 
                                     Console.WriteLine("Total days in hospital: " + daysInHospital[i]);
 
-                                  
+
                                     admitted[i] = false;
                                     assignedDoctors[i] = "";
 
@@ -385,7 +388,7 @@ namespace HMS_APP
 
                             }
                             Console.WriteLine("Total Days in Hospital: + daysInHospital[i");
-                        
+
 
                             {
                                 pateintFound = true;
@@ -396,25 +399,37 @@ namespace HMS_APP
                                 Console.WriteLine("Department:     " + departments[i]);
                                 Console.WriteLine("Admitted:       " + admitted[i]);
                                 Console.WriteLine("Total Visits:   " + visitCount[i]);
-                                Console.WriteLine("Total Billing:  " + billingAmount[i] + " OMR");
-                                Console.WriteLine("Doctor:         " + assignedDoctors[i]);
-                                Console.WriteLine("----------------------------------------");
                                 Console.WriteLine("Blood Type:      " + bloodType[i]);
                                 Console.WriteLine("Last Visit:     " + lastVisitDateStr[i]);
                                 Console.WriteLine("Last Discharge: " + lastDischargeDate[i]);
                                 Console.WriteLine("Days in Hospital: " + daysInHospital[i]);
-                                break;
+
+
+                                Console.WriteLine("Total Billing:  " + billingAmount[i] + " OMR");
+                                if (admitted[i] == false)
+                                {
+                                    Console.WriteLine("patient not currently admitted.");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Doctor:" + assignedDoctors[i]);
+                                }
                             }
-
-
                         }
 
                         if (pateintFound == false)
                         {
                             Console.WriteLine("Patient not found");
                         }
+                        
+                                break;
 
-                        break;
+                            
+
+
+                      
+
+                    
 
 
 
@@ -445,6 +460,10 @@ namespace HMS_APP
                                 Console.WriteLine("Name: " + patientNames[i] + " | ID: " + patientIDs[i] + " | Diagnosis: " + diagnoses[i] + " | Department: " + departments[i] + " | Doctor: " + assignedDoctors[i] + " | Admitted Since: " + admittedDate);
                                
                                 hasAdmitted = true;
+                                if (visitCount[i] > 1)
+                                    Console.WriteLine("This patient has been admitted " + visitCount[i] + " times");
+                                else
+                                    Console.WriteLine("this is first time");
                             }
                         }
 
@@ -462,6 +481,13 @@ namespace HMS_APP
                         Console.Write("Enter new doctor name: ");
                         string newDoctor = Console.ReadLine();
 
+                        if(currentDoctor == newDoctor)
+    {
+                            Console.WriteLine("Doctor names must be different. Transfer cancelled.");
+                            break;
+                        }
+
+
                         bool doctorFound = false;
 
                         for (int i = 0; i <= lastIndex; i++)
@@ -471,14 +497,18 @@ namespace HMS_APP
                                 doctorFound = true;
                                 assignedDoctors[i] = newDoctor;
                                 Console.WriteLine("Patient '" + patientNames[i] + "' has been transferred to " + newDoctor);
+
+
+
                                 if (lastVisitDateStr[i] == "") ;
                                 {
                                     Console.WriteLine("Patient last admitted on: No admission recorded");
                                 }
                                
                                 {
-                                    Console.WriteLine("Patient last admitted on: + lastVisitDate[i]");
+                                    Console.WriteLine("Patient last admitted on:" + lastVisitDateStr[i]);
                                 }
+                                break;
                             }
                         }
 
@@ -531,18 +561,15 @@ namespace HMS_APP
 
                         for (int i = 0; i <= lastIndex; i++)
                         {
-                            if (departments[i].ToLower() == searchDept.ToLower())
+                            if (departments[i] != null &&
+                                departments[i].Contains(searchDept, StringComparison.OrdinalIgnoreCase))
                             {
                                 deptFound = true;
 
 
                                 string status = admitted[i] ? "Admitted" : "Not Admitted"; //ternary operator
 
-                                //string stat;
-                                //if (admitted[i] == true)
-                                //    stat = "admitted";
-                                //else
-                                //    stat = "not admitted";
+                                
 
 
                                 Console.WriteLine("ID: " + patientIDs[i] + " | Name: " + patientNames[i] + " | Diagnosis: " + diagnoses[i] + " | Status: " + status + " | Blood Type: " + bloodType[i]);
@@ -574,6 +601,7 @@ namespace HMS_APP
                         catch (FormatException)
                         {
                             Console.WriteLine("Invalid input. Please enter 1 or 2.");
+                            break;
                         }
                  
 
@@ -601,37 +629,65 @@ namespace HMS_APP
                         if (patientNames[i] == billingInput || patientIDs[i] == billingInput)
 
                         {
-                            billingFound = true;
-                            Console.WriteLine("----------------------------------------");
-                            Console.WriteLine("Billing for " + patientNames[i] + ": " + billingAmount[i] + " OMR");
+                                    if (billingAmount[i] == 0)
+
+                                    {
+                                        Console.WriteLine("No billing records found for this patient");
+
+                                    }
+                                    else
+                                    {
+
+                                    }
+                                    Console.WriteLine("----------------------------------------");
+                                    Console.WriteLine("Billing for " + patientNames[i] + ": " + billingAmount[i] + " OMR");
+
+                                  
+                            
                                     if (lastVisitDateStr[i] == "") ;
                                     {
 
                                         Console.WriteLine("Last Visit Date: No admission recorded");
-                                    }
-                                    {
-                                        Console.WriteLine("Last Visit Date: + lastVisitDate[i])");
-                                    }
-                                    Console.WriteLine("Total Days: + daysInHospital[i]");
-                                    
-                                        break;
-                        }
-                    }
+                                        {
 
-                    if (billingFound == false)
+                                        }
+                                        Console.WriteLine("Last Visit Date: + lastVisitDate[i])");
+
+                                        Console.WriteLine("Total Days: + daysInHospital[i]");
+                                    }
+                                    billingFound = true;
+                                    break;
+                        }
+                            }
+
+                            if (billingFound == false)
                     {
                         Console.WriteLine("No billing records found for this patient");
                     }
                 }
+                            else
+                        {
+                            Console.WriteLine("Invalid option. Please enter 1 or 2.");
+                        }
 
-                break;
-            
+                        break;
+
 
                     case 10: // Exit
                         Console.WriteLine("Exiting system...");
-                        Console.WriteLine("Thank you for using the Healthcare Management System!");
                         Console.WriteLine("----------------------------------------");
-                        exit = true;
+
+                        Console.WriteLine("are you sure you want to exit?(yes/no)");
+                        string wantExit = Console.ReadLine();
+                        if (wantExit == "no")
+                        {
+                            exit = false;
+                        }
+                        else
+                        {
+                            exit = true;
+                            Console.WriteLine("Thank you for using the Healthcare Management System!");
+                        }
                         break;
 
                     default:
@@ -646,3 +702,5 @@ namespace HMS_APP
         }
     }
 }
+
+

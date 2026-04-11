@@ -182,7 +182,7 @@ namespace HMS_APP
                                     Console.Write("Doctor Name: ");
                                     assignedDoctors[i] = Console.ReadLine();
 
-                                    lastVisitDateStr[i] = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
+                                    lastVisitDateStr[i] = DateTime.Parse ("yyyy-MM-dd HH:mm");
 
 
                                     lastDischargeDate[i] = DateTime.MinValue;

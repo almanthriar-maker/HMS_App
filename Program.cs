@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.Design;
+﻿using System;
+using System.ComponentModel.Design;
 using System.Linq.Expressions;
 
 namespace HMS_APP
@@ -19,8 +20,8 @@ namespace HMS_APP
             double[] billingAmount = new double[100];
 
 
-            string[] lastVisitDateStr = new string[100];
-            string[] lastDischargeDate = new string[100];
+            DateTime[] lastVisitDateStr = new DateTime[100];
+            DateTime[] lastDischargeDate = new DateTime[100];
             int[] daysInHospital = new int[100];
             string[] bloodType = new string[100];
 
@@ -44,8 +45,8 @@ namespace HMS_APP
             assignedDoctors[lastIndex] = "";
             visitCount[lastIndex] = 2;
             billingAmount[lastIndex] = 0;
-            lastVisitDateStr[lastIndex] = "2025-01-10";
-            lastDischargeDate[lastIndex] = "2025-01-15";
+            lastVisitDateStr[lastIndex] = DateTime.Parse( "2025-01-10");
+            lastDischargeDate[lastIndex] = DateTime.Parse( "2025-01-15");
             daysInHospital[lastIndex] = 12;
             bloodType[lastIndex] = "A+";
 
@@ -59,8 +60,8 @@ namespace HMS_APP
             assignedDoctors[lastIndex] = "Dr. Noor";
             visitCount[lastIndex] = 4;
             billingAmount[lastIndex] = 0;
-            lastVisitDateStr[lastIndex] = "2025-03-02";
-            lastDischargeDate[lastIndex] = "";
+            lastVisitDateStr[lastIndex] = DateTime.Parse("2025-03-02");
+            lastDischargeDate[lastIndex] = DateTime.Parse( "");
             daysInHospital[lastIndex] = 8;
             bloodType[lastIndex] = "O-";
 
@@ -74,8 +75,8 @@ namespace HMS_APP
             assignedDoctors[lastIndex] = "";
             visitCount[lastIndex] = 1;
             billingAmount[lastIndex] = 0;
-            lastVisitDateStr[lastIndex] = "2024-12-20";
-            lastDischargeDate[lastIndex] = "2024-12-28";
+            lastVisitDateStr[lastIndex] = DateTime.Parse ("2024-12-20");
+            lastDischargeDate[lastIndex] = DateTime.Parse("2024-12-28");
             daysInHospital[lastIndex] = 5;
             bloodType[lastIndex] = "B+";
 
@@ -126,20 +127,20 @@ namespace HMS_APP
                     case 1: // Register New Patient
 
                         Console.Write("Patient Name: ");
-                        patientNames[lastIndex] = Console.ReadLine();
+                        patientNames[lastIndex] = Console.ReadLine().Trim();
 
                         //Console.Write("Patient ID: ");
                         //patientIDs[lastIndex] = Console.ReadLine();
 
                         Console.Write("Diagnosis: ");
-                        diagnoses[lastIndex] = Console.ReadLine();
+                        diagnoses[lastIndex] = Console.ReadLine().Trim();
 
                         Console.Write("Department: ");
-                        departments[lastIndex] = Console.ReadLine();
+                        departments[lastIndex] = Console.ReadLine().Trim();
 
 
                         Console.Write("Enter Blood Type: ");
-                        bloodType[lastIndex] = Console.ReadLine();
+                        bloodType[lastIndex] = Console.ReadLine().ToUpper();
 
                         patientIDs[lastIndex] = "P" + lastIndex.ToString("D3");
 
@@ -148,8 +149,8 @@ namespace HMS_APP
                         visitCount[lastIndex] = 0;
                         billingAmount[lastIndex] = 0;
 
-                        lastVisitDateStr[lastIndex] = "";
-                        lastDischargeDate[lastIndex] = "";
+                        lastVisitDateStr[lastIndex] = DateTime.Parse( "");
+                        lastDischargeDate[lastIndex] = DateTime.Parse( "");
                         daysInHospital[lastIndex] = 0;
 
 
@@ -165,7 +166,7 @@ namespace HMS_APP
                         string admitInput = Console.ReadLine();
 
 
-                        lastVisitDateStr[lastIndex] = "2025-01-10";
+                        lastVisitDateStr[lastIndex] = DateTime.Parse("2025-01-10");
 
 
                         bool admitFound = false;
@@ -180,15 +181,15 @@ namespace HMS_APP
                                 {
                                     Console.Write("Doctor Name: ");
                                     assignedDoctors[i] = Console.ReadLine();
-                                    Console.WriteLine("Enter Admission Date (YYYY-MM-DD): ");
-                                    string AdmitionDate = Console.ReadLine();
-                                    lastVisitDateStr[i] = AdmitionDate;
 
-                                    lastDischargeDate[i] = "";
+                                    lastVisitDateStr[i] = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
+
+
+                                    lastDischargeDate[i] = DateTime.MinValue;
 
                                     admitted[i] = true;
                                     visitCount[i]++;
-                                    lastVisitDateStr[i] = AdmitionDate;
+                                   
 
                                     Console.WriteLine("Patient admitted successfully and assigned to " + assignedDoctors[i]);
 
@@ -234,7 +235,7 @@ namespace HMS_APP
 
                                     Console.Write("Enter Discharge Date (YYYY-MM-DD): ");
                                     string dischargeDate = Console.ReadLine();
-                                    lastDischargeDate[i] = dischargeDate;
+                                    lastDischargeDate[i] = DateTime.Parse( dischargeDate);
 
                                     //day in hospital
 
@@ -355,7 +356,7 @@ namespace HMS_APP
 
                     case 4: // Search Patient
                         Console.Write("Enter Patient ID or Name: ");
-                        string searchInput = Console.ReadLine();
+                        string searchInput = Console.ReadLine().ToUpper();
 
 
                         bool pateintFound = false;
@@ -365,10 +366,10 @@ namespace HMS_APP
                         {
 
 
-                            if (patientNames[i] == searchInput || patientIDs[i] == searchInput)
+                            if (patientNames[i] == searchInput || patientIDs[i].ToUpper() == searchInput)
 
                                 Console.WriteLine("Bloo type:" + bloodType[i]);
-                            if (lastVisitDateStr[i] == "")
+                            if (lastVisitDateStr[i] == DateTime.Parse("")) 
                             {
                                 Console.WriteLine("last visit:   no admission recorded");
                             }
@@ -376,7 +377,7 @@ namespace HMS_APP
                             {
                                 Console.WriteLine("last visit:  lastvisitDate[i]");
                             }
-                            if (lastDischargeDate[i] == "") ;
+                            if (lastDischargeDate[i] == DateTime.Parse("")) ; 
                             {
 
                                 Console.WriteLine("Last Discharge: Still admitted");
@@ -394,8 +395,8 @@ namespace HMS_APP
                                 pateintFound = true;
                                 Console.WriteLine("----------------------------------------");
                                 Console.WriteLine("Name:           " + patientNames[i]);
-                                Console.WriteLine("ID:             " + patientIDs[i]);
-                                Console.WriteLine("Diagnosis:      " + diagnoses[i]);
+                                Console.WriteLine("ID:             " + patientIDs[i].ToUpper());
+                                Console.WriteLine("Diagnosis:      " + "("+ diagnoses[i].Length +  "characters");
                                 Console.WriteLine("Department:     " + departments[i]);
                                 Console.WriteLine("Admitted:       " + admitted[i]);
                                 Console.WriteLine("Total Visits:   " + visitCount[i]);
@@ -405,11 +406,11 @@ namespace HMS_APP
                                 Console.WriteLine("Days in Hospital: " + daysInHospital[i]);
 
 
-                                Console.WriteLine("Total Billing:  " + billingAmount[i] + " OMR");
+                                Console.WriteLine("Total Billing:  " + Convert.ToString(Math.Round(billingAmount[i],2 ))+ " OMR");
                                 if (admitted[i] == false)
                                 {
                                     Console.WriteLine("patient not currently admitted.");
-                                }
+                                } 
                                 else
                                 {
                                     Console.WriteLine("Doctor:" + assignedDoctors[i]);
@@ -440,30 +441,55 @@ namespace HMS_APP
                         Console.WriteLine("Currently Admitted Patients:");
                         Console.WriteLine("----------------------------------------");
 
+                        Console.WriteLine("Filter by name keyword (press Enter to skip): ");
+                        string keyword = Console.ReadLine().ToLower();
+
+
                         bool hasAdmitted = false;
+                        double highestbilling = 0;
+                       
 
                         for (int i = 0; i <= lastIndex; i++)
                         {
                             if (admitted[i] == true)
                             {
+
+                                if (keyword != "" && !patientNames[i].ToLower().Contains(keyword))
+                                {
+                                    continue;
+                                }
+
+
+
                                 string admittedDate;
 
-                                if (lastVisitDateStr[i] == "")
+                                if (lastVisitDateStr[i] == DateTime.Parse(""))
                                 {
                                     admittedDate = "No date recorded";
                                 }
-                                else
+                                else 
                                 {
-                                    admittedDate = lastVisitDateStr[i];
+                                    admittedDate = ("");
+
                                 }
 
-                                Console.WriteLine("Name: " + patientNames[i] + " | ID: " + patientIDs[i] + " | Diagnosis: " + diagnoses[i] + " | Department: " + departments[i] + " | Doctor: " + assignedDoctors[i] + " | Admitted Since: " + admittedDate);
+                                   
+
+                                    Console.WriteLine("Name: " + patientNames[i] + " | ID: " + patientIDs[i] + " | Diagnosis: " + diagnoses[i] + " | Department: " + departments[i] + " | Doctor: " + assignedDoctors[i] + " | Admitted Since: " + admittedDate);
                                
+                                
+
                                 hasAdmitted = true;
+
+                                highestbilling = Math.Max(highestbilling, billingAmount[i]);
+
                                 if (visitCount[i] > 1)
                                     Console.WriteLine("This patient has been admitted " + visitCount[i] + " times");
                                 else
                                     Console.WriteLine("this is first time");
+
+                                Console.WriteLine("----------------------");
+
                             }
                         }
 
@@ -471,17 +497,25 @@ namespace HMS_APP
                         {
                             Console.WriteLine("No patients currently admitted");
                         }
-
+                        else
+                        {
+                            Console.WriteLine("highestbilling among admitted patients: " + Convert.ToString(Math.Round(highestbilling, 2)) +  "OMR");
+                        }
                         break;
+
+
 
                     case 6: // Transfer Patient to Another Doctor
                         Console.Write("Enter current doctor name: ");
-                        string currentDoctor = Console.ReadLine();
+                        string currentDoctor = Console.ReadLine().Trim();
+                        currentDoctor = currentDoctor.Replace("Dr ", "Dr. ");
+
 
                         Console.Write("Enter new doctor name: ");
-                        string newDoctor = Console.ReadLine();
+                        string newDoctor = Console.ReadLine().Trim();
+                        newDoctor = newDoctor.Replace("Dr ", "Dr. ");
 
-                        if(currentDoctor == newDoctor)
+                        if (currentDoctor == newDoctor)
     {
                             Console.WriteLine("Doctor names must be different. Transfer cancelled.");
                             break;
@@ -500,7 +534,7 @@ namespace HMS_APP
 
 
 
-                                if (lastVisitDateStr[i] == "") ;
+                                if (lastVisitDateStr[i] == DateTime.Parse("") );
                                 {
                                     Console.WriteLine("Patient last admitted on: No admission recorded");
                                 }
@@ -556,22 +590,28 @@ namespace HMS_APP
 
                         bool deptFound = false;
 
-                        Console.WriteLine("Patients in department '" + searchDept + "':");
+                        Console.WriteLine("Patients in department '" + searchDept.ToUpper() + "':");
                         Console.WriteLine("----------------------------------------");
 
                         for (int i = 0; i <= lastIndex; i++)
                         {
                             if (departments[i] != null &&
-                                departments[i].Contains(searchDept, StringComparison.OrdinalIgnoreCase))
+                                departments[i].ToLower().Contains(searchDept.ToLower()))
                             {
                                 deptFound = true;
 
 
                                 string status = admitted[i] ? "Admitted" : "Not Admitted"; //ternary operator
 
-                                
-
-
+                                string diagnosisDisplay;
+                                if (diagnoses[i].Length > 15)
+                                {
+                                    diagnosisDisplay = diagnoses[i].Substring(0, 15) + "...";
+                                }
+                                else
+                                {
+                                    diagnosisDisplay = diagnoses[i];
+                                }
                                 Console.WriteLine("ID: " + patientIDs[i] + " | Name: " + patientNames[i] + " | Diagnosis: " + diagnoses[i] + " | Status: " + status + " | Blood Type: " + bloodType[i]);
                             }
                         }
@@ -592,80 +632,117 @@ namespace HMS_APP
                         int billingOption = 0;
 
                         try
-
                         {
-
                             billingOption = int.Parse(Console.ReadLine());
-
                         }
                         catch (FormatException)
                         {
                             Console.WriteLine("Invalid input. Please enter 1 or 2.");
                             break;
                         }
-                 
 
-                if (billingOption == 1)
-                {
-                    double totalBilling = 0;
-
-                    for (int i = 0; i <= lastIndex; i++)
-                    {
-                        totalBilling += billingAmount[i];
-                    }
-
-                    Console.WriteLine("");
-                    Console.WriteLine("Total billing collected: " + totalBilling + " OMR");
-                }
-                else if (billingOption == 2)
-                {
-                    Console.Write("Enter Patient ID or Name: ");
-                    string billingInput = Console.ReadLine();
-
-                    bool billingFound = false;
-
-                    for (int i = 0; i <= lastIndex; i++)
-                    {
-                        if (patientNames[i] == billingInput || patientIDs[i] == billingInput)
-
+                        if (billingOption == 1)
                         {
-                                    if (billingAmount[i] == 0)
+                            double totalBilling = 0;
 
+                            
+                            double maxBilling = 0;
+                            double minBilling = 0;
+                            bool hasValidBilling = false;
+
+                            for (int i = 0; i <= lastIndex; i++)
+                            {
+                                totalBilling += billingAmount[i];
+
+                               
+                                if (billingAmount[i] > 0)
+                                {
+                                    if (!hasValidBilling)
                                     {
-                                        Console.WriteLine("No billing records found for this patient");
-
+                                        minBilling = billingAmount[i];
+                                        maxBilling = billingAmount[i];
+                                        hasValidBilling = true;
                                     }
                                     else
                                     {
-
+                                        maxBilling = Math.Max(maxBilling, billingAmount[i]);
+                                        minBilling = Math.Min(minBilling, billingAmount[i]);
                                     }
-                                    Console.WriteLine("----------------------------------------");
-                                    Console.WriteLine("Billing for " + patientNames[i] + ": " + billingAmount[i] + " OMR");
+                                }
+                            }
 
-                                  
-                            
-                                    if (lastVisitDateStr[i] == "") ;
+                            Console.WriteLine("");
+                           
+                            Console.WriteLine("Total billing collected: " +
+                                              Math.Round(totalBilling, 2) + " OMR");
+
+                           
+                            if (hasValidBilling)
+                            {
+                                Console.WriteLine("Highest individual billing: " +
+                                                  Math.Round(maxBilling, 2) + " OMR");
+
+                                Console.WriteLine("Lowest individual billing: " +
+                                                  Math.Round(minBilling, 2) + " OMR");
+                            }
+                        }
+                        else if (billingOption == 2)
+                        {
+                            Console.Write("Enter Patient ID or Name: ");
+                            string billingInput = Console.ReadLine();
+
+                            bool billingFound = false;
+
+                            for (int i = 0; i <= lastIndex; i++)
+                            {
+                                if (patientNames[i] == billingInput || patientIDs[i] == billingInput)
+                                {
+                                    if (billingAmount[i] == 0)
                                     {
+                                        Console.WriteLine("No billing records found for this patient");
+                                    }
+                                    else
+                                    {
+                                        
+                                        double roundedBilling = Math.Round(billingAmount[i], 2);
 
+                                        Console.WriteLine("----------------------------------------");
+                                        Console.WriteLine("Billing for " + patientNames[i] + ": " +
+                                                          roundedBilling + " OMR");
+
+                                        
+                                        Random rand = new Random();
+                                        int discountPercent = rand.Next(5, 21);
+
+                                        double discountedAmount =
+                                            billingAmount[i] - (billingAmount[i] * discountPercent / 100.0);
+
+                                        Console.WriteLine("Discount applied: " +
+                                                          discountPercent + "% — Amount after discount: " +
+                                                          Math.Round(discountedAmount, 2) + " OMR");
+                                    }
+
+                                    
+                                    if (lastVisitDateStr[i] == DateTime.Parse("")) ;
+                                    {
                                         Console.WriteLine("Last Visit Date: No admission recorded");
                                         {
-
                                         }
                                         Console.WriteLine("Last Visit Date: + lastVisitDate[i])");
-
                                         Console.WriteLine("Total Days: + daysInHospital[i]");
                                     }
+
                                     billingFound = true;
                                     break;
-                        }
+                                }
                             }
 
                             if (billingFound == false)
-                    {
-                        Console.WriteLine("No billing records found for this patient");
-                    }
-                }
-                            else
+                            {
+                                Console.WriteLine("No billing records found for this patient");
+                            }
+                        }
+                        else
                         {
                             Console.WriteLine("Invalid option. Please enter 1 or 2.");
                         }

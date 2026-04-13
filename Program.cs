@@ -6,40 +6,34 @@ namespace HMS_APP
 {
     internal class Program
     {
+        // System Storage
+
+        static string[] patientNames = new string[100];
+        static string[] patientIDs = new string[100];
+        static string[] diagnoses = new string[100];
+        static bool[] admitted = new bool[100];
+        static string[] assignedDoctors = new string[100];
+        static string[] departments = new string[100];
+        static int[] visitCount = new int[100];
+        static double[] billingAmount = new double[100];
+
+
+        static DateTime[] lastVisitDateStr = new DateTime[100];
+        static DateTime[] lastDischargeDate = new DateTime[100];
+        static int[] daysInHospital = new int[100];
+        static string[] bloodType = new string[100];
+        static string[] doctorNames = new string[50];
+        static int[] doctorAvailableSlots = new int[50];
+        static int[] doctorVisitCount = new int[50];
+        static int lastDoctorIndex = -1;
+
+        static int lastIndex = 0;
+        
+
+
         static void Main(string[] args) //startig point
         {
-            // System Storage
-
-            string[] patientNames = new string[100];
-            string[] patientIDs = new string[100];
-            string[] diagnoses = new string[100];
-            bool[] admitted = new bool[100];
-            string[] assignedDoctors = new string[100];
-            string[] departments = new string[100];
-            int[] visitCount = new int[100];
-            double[] billingAmount = new double[100];
-
-
-            DateTime[] lastVisitDateStr = new DateTime[100];
-            DateTime[] lastDischargeDate = new DateTime[100];
-            int[] daysInHospital = new int[100];
-            string[] bloodType = new string[100];
-            string[] doctorNames= new string[50];
-            int[] doctorAvailableSlots= new int[50];
-            int[] doctorVisitCount= new int[50];
-            int lastDoctorIndex= -1;
-
-
-
-            // Patient[] patients = new Patient[100];
-
-            //////////////////////////////////////////////////////
-
-
-            // Seed Data
-            /////////////////////////////////////////////////////
-            int lastIndex = 0;
-            lastDoctorIndex = 0;
+            
 
 
             patientNames[lastIndex] = "Ali Hassan";
